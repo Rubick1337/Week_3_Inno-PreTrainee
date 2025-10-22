@@ -1,0 +1,6 @@
+@Week_3_Inno_PreTrainee_HostAddress = http://localhost:5205
+
+GET {{Week_3_Inno_PreTrainee_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
