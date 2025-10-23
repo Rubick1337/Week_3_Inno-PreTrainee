@@ -31,6 +31,7 @@ namespace Week_3_Inno_PreTrainee.Web.Controllers
             var books = _service.GetAllBooks();
             return Ok(books);
         }
+
         [HttpGet("{id:int}")]
         public ActionResult<Book> GetById(int id)
         {
@@ -79,6 +80,7 @@ namespace Week_3_Inno_PreTrainee.Web.Controllers
             _service.UpdateBook(id, book);
             return NoContent();
         }
+
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {

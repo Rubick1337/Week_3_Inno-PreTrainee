@@ -12,12 +12,11 @@ namespace Week_3_Inno_PreTrainee.Application.Services
         {
             _authors = authors;
         }
+
         public IEnumerable<Author> GetAllAuthors()
         {
-
             return _authors.GetAll();
         }
-
         public Author GetAuthorById(int id)
         {
             return _authors.GetById(id);

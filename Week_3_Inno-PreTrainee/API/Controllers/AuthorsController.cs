@@ -82,6 +82,7 @@ namespace Week_3_Inno_PreTrainee.Web.Controllers
             _service.UpdateAuthor(id, author);
             return NoContent();
         }
+
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {

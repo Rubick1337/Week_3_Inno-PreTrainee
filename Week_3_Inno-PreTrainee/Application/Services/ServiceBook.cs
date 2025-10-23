@@ -17,7 +17,6 @@ namespace Week_3_Inno_PreTrainee.Application.Services
 
             return _books.GetAll();
         }
-
         public Book GetBookById(int id)
         {
             return _books.GetById(id);
