@@ -2,7 +2,7 @@
 using Week_3_Inno_PreTrainee.Data.Interfaces;
 using Week_3_Inno_PreTrainee.Domain.Interfaces;
 
-namespace Week_3_Inno_PreTrainee.Infrastructure.Repositories
+namespace Week_3_Inno_PreTrainee.Data.Repositories
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IIWithId
     {

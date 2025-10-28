@@ -8,5 +8,6 @@ namespace Week_3_Inno_PreTrainee.Domain.Models
         public string Title { get; set; }
         public DateTime PublishedYear { get; set; }
         public int AuthorId { get; set; }
+        public Author Author { get; set; }
     }
 }
