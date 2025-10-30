@@ -12,16 +12,17 @@ var configuration = builder.Configuration;
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<LibraryContext>(options => 
+builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-builder.Services.AddSingleton<IRepositoryBase<Author>, RepositoryAuthor>();
-builder.Services.AddSingleton<IRepositoryBase<Book>, RepositoryBook>();
+builder.Services.AddScoped<IRepositoryAuthor, RepositoryAuthor>();
+builder.Services.AddScoped<IRepositoryBook, RepositoryBook>();
 
-builder.Services.AddSingleton<IServiceAuthor, ServiceAuthor>();
-builder.Services.AddSingleton<IServiceBook, ServiceBook>();
+
+builder.Services.AddScoped<IServiceAuthor, ServiceAuthor>();
+builder.Services.AddScoped<IServiceBook, ServiceBook>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
