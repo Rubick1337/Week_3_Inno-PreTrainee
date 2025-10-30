@@ -7,7 +7,7 @@ namespace Week_3_Inno_PreTrainee.Application.Validators.BookValidator
 {
     public class BookForCreationDtoValidator : AbstractValidator<BookUpdateDto>
     {
-        public BookForCreationDtoValidator(IRepositoryBase<Author> authors)
+        public BookForCreationDtoValidator()
         {
             RuleFor(book => book.Title)
             .NotEmpty().WithMessage("Title обязательное поле");
@@ -17,9 +17,6 @@ namespace Week_3_Inno_PreTrainee.Application.Validators.BookValidator
             .LessThanOrEqualTo(DateTime.Now)
             .WithMessage("Дата не может быть позже текущей.");
 
-            RuleFor(book => book.AuthorId)
-                .Must(id => authors.GetById(id) != null)
-                .WithMessage("Указанный AuthorId не существует.");
         }
     }
 }
