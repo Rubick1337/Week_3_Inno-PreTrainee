@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using Week_3_Inno_PreTrainee.Data.Context;
 using Week_3_Inno_PreTrainee.Data.Interfaces;
 using Week_3_Inno_PreTrainee.Domain.Interfaces;
 
@@ -6,34 +8,52 @@ namespace Week_3_Inno_PreTrainee.Data.Repositories
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IIWithId
     {
-        protected readonly List<T> _items = new();
+        protected readonly LibraryContext _libraryContext;
 
-        public IEnumerable<T> GetAll()
+        public RepositoryBase(LibraryContext libraryContext)
         {
-            return _items.ToList();
+            _libraryContext = libraryContext;
         }
 
-        public T GetById(int id)
+        public async Task<T> CreateAsync(T item)
         {
-            return _items.FirstOrDefault(x => x.Id == id);
-        }
-
-        public T Create(T item)
-        {
-            item.Id = _items.Count + 1;
-            _items.Add(item);
+            await _libraryContext.Set<T>().AddAsync(item);
+            await _libraryContext.SaveChangesAsync();
             return item;
         }
 
-        public void Update(int id, T updatedData)
+        public async Task DeleteByIdAsync(int id)
         {
-            var idUpdate = _items.FindIndex(x => x.Id == id);
-            _items[idUpdate] = updatedData;
+            var existing = await _libraryContext.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+            _libraryContext.Set<T>().Remove(existing);
+
+            await _libraryContext.SaveChangesAsync();
         }
 
-        public void DeleteById(int id)
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            _items.RemoveAll(x => x.Id == id);
+            return await _libraryContext.Set<T>()
+                         .AsNoTracking()
+                         .ToListAsync();
         }
+
+        public async Task<T?> GetByIdAsync(int id)
+        {
+            var entity = await _libraryContext.Set<T>()
+                               .AsNoTracking()
+                               .FirstOrDefaultAsync(x => x.Id == id);
+
+            return entity;
+        }
+
+        public async Task UpdateAsync(int id, T updated)
+        {
+            var existing = await _libraryContext.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+            updated.Id = id;
+            _libraryContext.Entry(existing).CurrentValues.SetValues(updated);
+
+            await _libraryContext.SaveChangesAsync();
+        }
+
     }
 }
