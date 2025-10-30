@@ -26,16 +26,16 @@ namespace Week_3_Inno_PreTrainee.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Book>> GetAll()
+        public async Task<ActionResult<IEnumerable<Book>>> GetAll()
         {
-            var books = _service.GetAllBooks();
+            var books = await _service.GetAllBooks();
             return Ok(books);
         }
 
         [HttpGet("{id:int}")]
-        public ActionResult<Book> GetById(int id)
+        public async Task<ActionResult<Book>> GetById(int id)
         {
-            var book = _service.GetBookById(id);
+            var book = await _service.GetBookById(id);
             if (book == null)
             {
                 return NotFound();
@@ -44,7 +44,7 @@ namespace Week_3_Inno_PreTrainee.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult<BookForCreationDto> Create([FromBody] BookForCreationDto bookDto)
+        public async Task<ActionResult<BookForCreationDto>> Create([FromBody] BookForCreationDto bookDto)
         {
             var result = _putBookCreationValidator.Validate(bookDto);
             if (!result.IsValid)
@@ -58,12 +58,20 @@ namespace Week_3_Inno_PreTrainee.Web.Controllers
                 PublishedYear = bookDto.PublishedYear,
                 AuthorId = bookDto.AuthorId,
             };
-            var created = _service.CreateBook(book);
-            return Ok(created);
+            try
+            {
+                var created = await _service.CreateBook(book);
+                return Ok(created);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult Update(int id, [FromBody] BookUpdateDto bookDto)
+        public async Task<IActionResult> Update(int id, [FromBody] BookUpdateDto bookDto)
         {
             var result = _putBookUpdateValidator.Validate(bookDto);
             if (!result.IsValid)
@@ -77,20 +85,43 @@ namespace Week_3_Inno_PreTrainee.Web.Controllers
                 PublishedYear = bookDto.PublishedYear,
                 AuthorId = bookDto.AuthorId,
             };
-            _service.UpdateBook(id, book);
+            try
+            {
+                await _service.UpdateBook(id, book);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return NoContent();
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var book = _service.GetBookById(id);
+            var book = await _service.GetBookById(id);
             if (book == null)
             {
                 return NotFound();
             }
-            _service.DeleteBookById(id);
+            await _service.DeleteBookById(id);
             return NoContent();
+        }
+        [HttpGet("search")]
+        public async Task<ActionResult<Book>> GetsByTitle(string title)
+        {
+            var books = await _service.GetAllBooksWithTitleAsync(title);
+            return Ok(books);
+        }
+        [HttpGet("filter")]
+        public async Task<ActionResult<Book>> GetsByFilterYear(int year)
+        {
+            if (year < 0)
+            {
+                return BadRequest("Год не может быть отрицательным");
+            }
+            var books = await _service.GetAllBooksFilterByYearAsync(year);
+            return Ok(books);
         }
     }
 }
