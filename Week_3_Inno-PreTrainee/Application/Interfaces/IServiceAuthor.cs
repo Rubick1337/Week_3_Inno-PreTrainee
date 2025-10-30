@@ -4,10 +4,12 @@ namespace Week_3_Inno_PreTrainee.Application.Interfaces
 {
     public interface IServiceAuthor
     {
-        IEnumerable<Author> GetAllAuthors();
-        Author GetAuthorById(int id);
-        Author CreateAuthor(Author item);
-        void UpdateAuthor(int id, Author updatedData);
-        void DeleteAuthorById(int id);
+        Task<IEnumerable<Author>> GetAllAuthors();
+        Task<Author?> GetAuthorById(int id);
+        Task<Author> CreateAuthor(Author item);
+        Task UpdateAuthor(int id, Author updatedData);
+        Task DeleteAuthorById(int id);
+        Task<IEnumerable<Author>> GetAllAuthorsWithNameAsync(string param);
+        Task<IEnumerable<Author>> GetAllAuthorsWithBooksAsync();
     }
 }

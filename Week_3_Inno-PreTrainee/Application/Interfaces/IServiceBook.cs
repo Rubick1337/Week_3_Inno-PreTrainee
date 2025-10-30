@@ -4,10 +4,12 @@ namespace Week_3_Inno_PreTrainee.Application.Interfaces
 {
     public interface IServiceBook
     {
-        IEnumerable<Book> GetAllBooks();
-        Book GetBookById(int id);
-        Book CreateBook(Book item);
-        void UpdateBook(int id, Book updatedData);
-        void DeleteBookById(int id);
+        Task<IEnumerable<Book>> GetAllBooks();
+        Task<Book?> GetBookById(int id);
+        Task<Book> CreateBook(Book item);
+        Task UpdateBook(int id, Book updatedData);
+        Task DeleteBookById(int id);
+        Task<IEnumerable<Book>> GetAllBooksWithTitleAsync(string param);
+        Task<IEnumerable<Book>> GetAllBooksFilterByYearAsync(int year);
     }
 }

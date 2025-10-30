@@ -1,37 +1,48 @@
 ﻿using Week_3_Inno_PreTrainee.Application.Interfaces;
 using Week_3_Inno_PreTrainee.Data.Interfaces;
+using Week_3_Inno_PreTrainee.Data.Repositories;
 using Week_3_Inno_PreTrainee.Domain.Models;
 
 namespace Week_3_Inno_PreTrainee.Application.Services
 {
     public class ServiceAuthor : IServiceAuthor
     {
-        private readonly IRepositoryBase<Author> _authors;
+        private readonly IRepositoryAuthor _authors;
 
-        public ServiceAuthor(IRepositoryBase<Author> authors)
+        public ServiceAuthor(IRepositoryAuthor authors)
         {
             _authors = authors;
         }
 
-        public IEnumerable<Author> GetAllAuthors()
+        public async Task<IEnumerable<Author>> GetAllAuthors()
         {
-            return _authors.GetAll();
+            return await _authors.GetAllAsync();
         }
-        public Author GetAuthorById(int id)
+        public async Task<Author?> GetAuthorById(int id)
         {
-            return _authors.GetById(id);
+            return  await _authors.GetByIdAsync(id);
         }
-        public Author CreateAuthor(Author item)
+        public async Task<Author> CreateAuthor(Author item)
         {
-            return _authors.Create(item);
+            return await _authors.CreateAsync(item);
         }
-        public void UpdateAuthor(int id, Author updatedData)
+        public async Task UpdateAuthor(int id, Author updatedData)
         {
-            _authors.Update(id, updatedData);
+            await _authors.UpdateAsync(id, updatedData);
         }
-        public void DeleteAuthorById(int id)
+        public async Task  DeleteAuthorById(int id)
         {
-            _authors.DeleteById(id);
+           await _authors.DeleteByIdAsync(id);
+        }
+        public async Task<IEnumerable<Author>> GetAllAuthorsWithNameAsync(string param)
+        {
+            return await _authors.GetAllWithNameAsync(param);
+        }
+
+        public async Task<IEnumerable<Author>> GetAllAuthorsWithBooksAsync()
+        {
+
+            return await _authors.GetAllWithCountBookAsync();
         }
     }
 }

@@ -1,37 +1,65 @@
-﻿using Week_3_Inno_PreTrainee.Application.Interfaces;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Week_3_Inno_PreTrainee.Application.Interfaces;
 using Week_3_Inno_PreTrainee.Data.Interfaces;
 using Week_3_Inno_PreTrainee.Domain.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Week_3_Inno_PreTrainee.Application.Services
 {
     public class ServiceBook : IServiceBook
     {
-        private readonly IRepositoryBase<Book> _books;
+        private readonly IRepositoryBook _books;
+        private readonly IRepositoryAuthor _authors;
 
-        public ServiceBook(IRepositoryBase<Book> books)
+        public ServiceBook(IRepositoryBook books, IRepositoryAuthor authors)
         {
             _books = books;
+            _authors = authors;
         }
-        public IEnumerable<Book> GetAllBooks()
-        {
 
-            return _books.GetAll();
-        }
-        public Book GetBookById(int id)
+        public async Task<IEnumerable<Book>> GetAllBooks()
         {
-            return _books.GetById(id);
+            return await _books.GetAllAsync();
         }
-        public Book CreateBook(Book item)
+        public async Task<Book?> GetBookById(int id)
         {
-            return _books.Create(item);
+            return await _books.GetByIdAsync(id);
         }
-        public void UpdateBook(int id, Book updatedData)
+        public async Task<Book> CreateBook(Book item)
         {
-            _books.Update(id, updatedData);
+            var author = await _authors.GetByIdAsync(item.AuthorId);
+
+            if (author is null)
+            {
+                throw new KeyNotFoundException("Автор с id не найден");
+            }
+
+            return await _books.CreateAsync(item);
         }
-        public void DeleteBookById(int id)
+        public async Task UpdateBook(int id, Book updatedData)
         {
-            _books.DeleteById(id);
+            var author = await _authors.GetByIdAsync(updatedData.AuthorId);
+
+            if (author is null)
+            {
+                throw new KeyNotFoundException("Автор с id не найден");
+            }
+
+            await _books.UpdateAsync(id, updatedData);
+        }
+        public async Task DeleteBookById(int id)
+        {
+            await _books.DeleteByIdAsync(id);
+        }
+
+        public async Task<IEnumerable<Book>> GetAllBooksWithTitleAsync(string param)
+        {
+           return await _books.GetAllWithNameAsync(param);
+        }
+
+        public async Task<IEnumerable<Book>> GetAllBooksFilterByYearAsync(int year)
+        {
+            return await _books.GetAllFilterByYearAsync(year);
         }
     }
 }
