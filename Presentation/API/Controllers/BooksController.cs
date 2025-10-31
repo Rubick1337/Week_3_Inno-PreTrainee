@@ -5,7 +5,7 @@ using Week_3_Inno_PreTrainee.Application.Dto.BookDto;
 using Week_3_Inno_PreTrainee.Application.Interfaces;
 using Week_3_Inno_PreTrainee.Domain.Models;
 
-namespace Week_3_Inno_PreTrainee.Web.Controllers
+namespace Week_3_Inno_PreTrainee.Presentation.Controllers
 {
     [ApiController]
     [Route("api/book")]

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Week_3_Inno_PreTrainee.Application.Dto.AuthorDto;
 
-namespace Week_3_Inno_PreTrainee.Application.Validators.AuthorValidator
+namespace Week_3_Inno_PreTrainee.Presentation.Validators.AuthorValidator
 {
     public class AuthorForUpdateDtoValidator : AbstractValidator<AuthorForUpdateDto>
     {

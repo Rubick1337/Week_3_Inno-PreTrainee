@@ -2,10 +2,11 @@ using FluentValidation;
 using Week_3_Inno_PreTrainee.Application.Services;
 using Week_3_Inno_PreTrainee.Application.Interfaces;
 using Week_3_Inno_PreTrainee.Data.Repositories;
-using Week_3_Inno_PreTrainee.Domain.Models;
 using Week_3_Inno_PreTrainee.Data.Interfaces;
 using Week_3_Inno_PreTrainee.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Week_3_Inno_PreTrainee.Presentation.Validators.AuthorValidator;
+using Week_3_Inno_PreTrainee.Presentation.Validators.BookValidator;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -15,7 +16,11 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
 
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddValidatorsFromAssemblies(new[]
+{
+    typeof(AuthorForCreationDtoValidator).Assembly,
+    typeof(BookForCreationDtoValidator).Assembly
+});
 
 builder.Services.AddScoped<IRepositoryAuthor, RepositoryAuthor>();
 builder.Services.AddScoped<IRepositoryBook, RepositoryBook>();
