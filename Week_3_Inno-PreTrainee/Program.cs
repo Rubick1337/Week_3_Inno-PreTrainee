@@ -7,33 +7,27 @@ using Week_3_Inno_PreTrainee.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Week_3_Inno_PreTrainee.Presentation.Validators.AuthorValidator;
 using Week_3_Inno_PreTrainee.Presentation.Validators.BookValidator;
+using Week_3_Inno_PreTrainee.Middleware;
+using Week_3_Inno_PreTrainee.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<LibraryContext>(options =>
-    options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
+builder.Services.ConfigureExtasion(configuration);
 
-builder.Services.AddValidatorsFromAssemblies(new[]
-{
-    typeof(AuthorForCreationDtoValidator).Assembly,
-    typeof(BookForCreationDtoValidator).Assembly
-});
+builder.Services.DataExtasion();
 
-builder.Services.AddScoped<IRepositoryAuthor, RepositoryAuthor>();
-builder.Services.AddScoped<IRepositoryBook, RepositoryBook>();
+builder.Services.ApplicationExtasion();
 
-
-builder.Services.AddScoped<IServiceAuthor, ServiceAuthor>();
-builder.Services.AddScoped<IServiceBook, ServiceBook>();
+builder.Services.AddValidation();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
+app.UseException();
 
 if (app.Environment.IsDevelopment())
 {
