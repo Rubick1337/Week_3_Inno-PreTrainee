@@ -6,7 +6,7 @@ using Week_3_Inno_PreTrainee.Domain.Interfaces;
 
 namespace Week_3_Inno_PreTrainee.Data.Repositories
 {
-    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IIWithId
+    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IEntity
     {
         protected readonly LibraryContext _libraryContext;
 
@@ -30,7 +30,7 @@ namespace Week_3_Inno_PreTrainee.Data.Repositories
             await _libraryContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public  async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _libraryContext.Set<T>()
                          .AsNoTracking()
