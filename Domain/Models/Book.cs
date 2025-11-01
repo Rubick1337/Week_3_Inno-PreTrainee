@@ -2,7 +2,7 @@
 
 namespace Week_3_Inno_PreTrainee.Domain.Models
 {
-    public class Book : IIWithId
+    public class Book : IEntity
     {
         public int Id { get; set; }
         public string Title { get; set; }
