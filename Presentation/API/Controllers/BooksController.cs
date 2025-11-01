@@ -8,7 +8,7 @@ using Week_3_Inno_PreTrainee.Domain.Models;
 namespace Week_3_Inno_PreTrainee.Presentation.Controllers
 {
     [ApiController]
-    [Route("api/book")]
+    [Route("api/books")]
     public class BooksController : ControllerBase
     {
         private readonly IServiceBook _service;
@@ -36,7 +36,7 @@ namespace Week_3_Inno_PreTrainee.Presentation.Controllers
         public async Task<ActionResult<Book>> GetById(int id)
         {
             var book = await _service.GetBookById(id);
-            if (book == null)
+            if (book is null)
             {
                 return NotFound();
             }
@@ -58,16 +58,9 @@ namespace Week_3_Inno_PreTrainee.Presentation.Controllers
                 PublishedYear = bookDto.PublishedYear,
                 AuthorId = bookDto.AuthorId,
             };
-            try
-            {
-                var created = await _service.CreateBook(book);
-                return Ok(created);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
 
+             var created = await _service.CreateBook(book);
+             return Ok(created);
         }
 
         [HttpPut("{id:int}")]
@@ -85,14 +78,11 @@ namespace Week_3_Inno_PreTrainee.Presentation.Controllers
                 PublishedYear = bookDto.PublishedYear,
                 AuthorId = bookDto.AuthorId,
             };
-            try
+            if(book is null )
             {
+                return NotFound();
+            }
                 await _service.UpdateBook(id, book);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
             return NoContent();
         }
 
@@ -100,21 +90,21 @@ namespace Week_3_Inno_PreTrainee.Presentation.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var book = await _service.GetBookById(id);
-            if (book == null)
+            if (book is null)
             {
                 return NotFound();
             }
             await _service.DeleteBookById(id);
             return NoContent();
         }
-        [HttpGet("search")]
-        public async Task<ActionResult<Book>> GetsByTitle(string title)
+        [HttpGet("by-title")]
+        public async Task<ActionResult<Book>> GetsByTitle([FromQuery]string title)
         {
             var books = await _service.GetAllBooksWithTitleAsync(title);
             return Ok(books);
         }
-        [HttpGet("filter")]
-        public async Task<ActionResult<Book>> GetsByFilterYear(int year)
+        [HttpGet("by-year")]
+        public async Task<ActionResult<Book>> GetsByFilterYear([FromQuery]int year)
         {
             if (year < 0)
             {

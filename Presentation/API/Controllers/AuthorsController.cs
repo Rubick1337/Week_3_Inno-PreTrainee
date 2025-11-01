@@ -10,7 +10,7 @@ using Week_3_Inno_PreTrainee.Domain.Models;
 namespace Week_3_Inno_PreTrainee.Presentation.Controllers
 {
     [ApiController]
-    [Route("api/author")]
+    [Route("api/authors")]
     public class AuthorsController : ControllerBase
     {
         private readonly IServiceAuthor _service;
@@ -30,15 +30,16 @@ namespace Week_3_Inno_PreTrainee.Presentation.Controllers
         [HttpGet]
         public async Task <ActionResult<IEnumerable<Author>>> GetAll()
         {
-            var authors =  await _service.GetAllAuthors();
-            return Ok(authors);
+            var authors =  await _service.GetAllAuthorsWithBooksAsync();
+            var authorsDto = authors.Select(a => new AuthorForReadWithCount(a.Id, a.Name, a.DateOfBirth, a.Books.Count()));
+            return Ok(authorsDto);
         }
 
         [HttpGet("{id:int}")]
         public async Task <ActionResult<Author>> GetById(int id)
         {
             var author = await _service.GetAuthorById(id);
-            if (author == null)
+            if (author is null)
             {
                 return NotFound();
             }
@@ -86,25 +87,18 @@ namespace Week_3_Inno_PreTrainee.Presentation.Controllers
         public async Task <IActionResult> Delete(int id)
         {
             var author = await _service.GetAuthorById(id);
-            if (author == null)
+            if (author is null)
             {
                 return NotFound();
             }
             await _service.DeleteAuthorById(id);
             return NoContent();
         }
-        [HttpGet("search")]
-        public async Task <ActionResult<IEnumerable<Author>>>GetsByName(string name)
+        [HttpGet("by-name")]
+        public async Task <ActionResult<IEnumerable<Author>>> GetsByName([FromQuery] string? name)
         {
             var authors = await _service.GetAllAuthorsWithNameAsync(name);
             return Ok(authors);
-        }
-        [HttpGet("GetWithCount")]
-        public async Task <ActionResult<IEnumerable<Author>>>GetsWithCount()
-        {
-            var authors = await _service.GetAllAuthorsWithBooksAsync();
-            var authorsDto = authors.Select(a => new AuthorForReadWithCount(a.Id, a.Name,a.DateOfBirth,a.Books.Count()));
-            return Ok(authorsDto);
         }
     }
 }
