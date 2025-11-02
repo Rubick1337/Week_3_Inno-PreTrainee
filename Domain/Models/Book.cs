@@ -1,8 +1,8 @@
-﻿using Week_3_Inno_PreTrainee.Domain.Interfaces;
+﻿using Domain.Models;
 
 namespace Week_3_Inno_PreTrainee.Domain.Models
 {
-    public class Book : IEntity
+    public class Book : Entity
     {
         public int Id { get; set; }
         public string Title { get; set; }

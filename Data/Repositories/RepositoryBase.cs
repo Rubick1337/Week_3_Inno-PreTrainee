@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using Week_3_Inno_PreTrainee.Data.Context;
 using Week_3_Inno_PreTrainee.Data.Interfaces;
-using Week_3_Inno_PreTrainee.Domain.Interfaces;
 
 namespace Week_3_Inno_PreTrainee.Data.Repositories
 {
-    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class, IEntity
+    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : Entity
     {
         protected readonly LibraryContext _libraryContext;
 
