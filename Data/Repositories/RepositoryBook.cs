@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Week_3_Inno_PreTrainee.Data.Context;
-using Week_3_Inno_PreTrainee.Data.Interfaces;
+using Week_3_Inno_PreTrainee.Domain.Interfaces;
 using Week_3_Inno_PreTrainee.Domain.Models;
 
 namespace Week_3_Inno_PreTrainee.Data.Repositories
