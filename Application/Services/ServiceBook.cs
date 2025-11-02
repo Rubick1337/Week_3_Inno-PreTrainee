@@ -4,16 +4,13 @@ using Week_3_Inno_PreTrainee.Domain.Models;
 
 namespace Week_3_Inno_PreTrainee.Application.Services
 {
-    public class ServiceBook : IServiceBook
+    public class ServiceBook(
+        IRepositoryBook books, 
+        IRepositoryAuthor authors
+    ) : IServiceBook
     {
-        private readonly IRepositoryBook _books;
-        private readonly IRepositoryAuthor _authors;
-
-        public ServiceBook(IRepositoryBook books, IRepositoryAuthor authors)
-        {
-            _books = books;
-            _authors = authors;
-        }
+        private readonly IRepositoryBook _books = books;
+        private readonly IRepositoryAuthor _authors = authors;
 
         public async Task<IEnumerable<Book>> GetAllBooks()
         {

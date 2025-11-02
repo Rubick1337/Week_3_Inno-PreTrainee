@@ -5,13 +5,10 @@ using Week_3_Inno_PreTrainee.Domain.Models;
 
 namespace Week_3_Inno_PreTrainee.Data.Repositories
 {
-    public class RepositoryAuthor : RepositoryBase<Author>, IRepositoryAuthor
+    public class RepositoryAuthor(
+        LibraryContext libraryContext
+        ) : RepositoryBase<Author>(libraryContext), IRepositoryAuthor
     {
-        public RepositoryAuthor(LibraryContext libraryContext) : base(libraryContext) 
-        {
-           
-        }
-
         public async Task<IEnumerable<Author>> GetAllWithCountBookAsync()
         {
             return await _libraryContext.Set<Author>()

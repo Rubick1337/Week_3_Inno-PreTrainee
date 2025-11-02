@@ -4,14 +4,9 @@ using Week_3_Inno_PreTrainee.Domain.Models;
 
 namespace Week_3_Inno_PreTrainee.Application.Services
 {
-    public class ServiceAuthor : IServiceAuthor
+    public class ServiceAuthor(IRepositoryAuthor authors) : IServiceAuthor
     {
-        private readonly IRepositoryAuthor _authors;
-
-        public ServiceAuthor(IRepositoryAuthor authors)
-        {
-            _authors = authors;
-        }
+        private readonly IRepositoryAuthor _authors = authors;
 
         public async Task<IEnumerable<Author>> GetAllAuthors()
         {

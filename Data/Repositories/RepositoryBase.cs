@@ -6,20 +6,17 @@ using Week_3_Inno_PreTrainee.Data.Interfaces;
 
 namespace Week_3_Inno_PreTrainee.Data.Repositories
 {
-    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : Entity
+    public abstract class RepositoryBase<T>(
+        LibraryContext libraryContext
+    ) : IRepositoryBase<T> where T : Entity
     {
-        protected readonly LibraryContext _libraryContext;
-
-        public RepositoryBase(LibraryContext libraryContext)
-        {
-            _libraryContext = libraryContext;
-        }
+        protected readonly LibraryContext _libraryContext = libraryContext;
 
         public async Task<T> CreateAsync(T item)
         {
             await _libraryContext.Set<T>().AddAsync(item);
             await _libraryContext.SaveChangesAsync();
-            return item;
+            return item; 
         }
 
         public async Task DeleteByIdAsync(int id)

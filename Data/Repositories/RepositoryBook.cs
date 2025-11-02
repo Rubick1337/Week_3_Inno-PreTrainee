@@ -5,13 +5,8 @@ using Week_3_Inno_PreTrainee.Domain.Models;
 
 namespace Week_3_Inno_PreTrainee.Data.Repositories
 {
-    public class RepositoryBook : RepositoryBase<Book> ,IRepositoryBook
+    public class RepositoryBook(LibraryContext libraryContext) : RepositoryBase<Book>(libraryContext) ,IRepositoryBook
     {
-        public RepositoryBook(LibraryContext libraryContext) : base(libraryContext)
-        {
-
-        }
-
         public async Task<IEnumerable<Book>> GetAllFilterByYearAsync(int year)
         {
             return await _libraryContext.Set<Book>()
