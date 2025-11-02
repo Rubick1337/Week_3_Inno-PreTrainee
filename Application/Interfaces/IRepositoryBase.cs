@@ -1,4 +1,4 @@
-﻿namespace Week_3_Inno_PreTrainee.Domain.Interfaces
+﻿namespace Week_3_Inno_PreTrainee.Application.Interfaces
 {
     public interface IRepositoryBase<T> where T : class
     {
