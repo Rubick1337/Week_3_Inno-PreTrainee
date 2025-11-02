@@ -15,11 +15,11 @@ var configuration = builder.Configuration;
 
 builder.Services.AddControllers();
 
-builder.Services.ConfigureExtasion(configuration);
+builder.Services.ConfigureExtension(configuration);
 
-builder.Services.DataExtasion();
+builder.Services.DataExtension();
 
-builder.Services.ApplicationExtasion();
+builder.Services.ApplicationExtension();
 
 builder.Services.AddValidation();
 

@@ -10,9 +10,9 @@ using Week_3_Inno_PreTrainee.Presentation.Validators.BookValidator;
 
 namespace Week_3_Inno_PreTrainee.Extensions
 {
-    public static class ServicesExtasion
+    public static class ServicesExtension
     {
-        public static IServiceCollection ConfigureExtasion(
+        public static IServiceCollection ConfigureExtension(
             this IServiceCollection services,
             IConfiguration configuration
             )
@@ -22,7 +22,7 @@ namespace Week_3_Inno_PreTrainee.Extensions
             return services;
         }
 
-        public static IServiceCollection DataExtasion(this IServiceCollection services)
+        public static IServiceCollection DataExtension(this IServiceCollection services)
         {
 
             services.AddScoped<IRepositoryAuthor, RepositoryAuthor>();
@@ -30,7 +30,7 @@ namespace Week_3_Inno_PreTrainee.Extensions
             return services;
         }
 
-        public static IServiceCollection ApplicationExtasion(
+        public static IServiceCollection ApplicationExtension(
             this IServiceCollection services
             )
         {
